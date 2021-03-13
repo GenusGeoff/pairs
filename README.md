@@ -37,26 +37,24 @@ If you'd like instead to create a virtual environment, see the heading "Environm
 After installation, `pairs` can be used to backtest a pair of two stocks like this: 
 
 ```
-pairs analyze-pair --symbols FB,AMZN
+pairs analyze-pair --symbols SPY,QQQ
 ```
 
-...where symbols "FB" and "AMZN" are used as example symbols. Nearly any pair of widely-traded
+...where symbols "SPY" and "QQQ" are used as example symbols. Nearly any pair of widely-traded
 stocks should work. Running `pairs analyze-pair` will result in a table in this form:
 
-|    | metric               | value                     |
-|---:|:---------------------|:--------------------------|
-|  0 | date_min             | 2019-03-14T00:00:00-05:00 |
-|  1 | date_max             | 2021-03-12T00:00:00-06:00 |
-|  2 | count_data_points    | 504                       |
-|  3 | count_trades         | 21                        |
-|  4 | winrate              | 52.38%                    |
-|  5 | count_losing_trades  | 10                        |
-|  6 | count_winning_trades | 11                        |
-|  7 | profit_max           | $11.05                    |
-|  8 | loss_max             | $-47.72                   |
-|  9 | sum_profit           | $-170.58                  |
-| 10 | profit_mean          | $6.82                     |
-| 11 | loss_mean            | $-24.56                   |
+|    | metric            | value               |
+|---:|:------------------|:--------------------|
+|  0 | date_min          | 2019-03-14T00:00:00 |
+|  1 | date_max          | 2021-03-12T00:00:00 |
+|  2 | count_data_points | 504                 |
+|  3 | count_trades      | 22                  |
+|  4 | winrate           | 63.64%              |
+|  5 | profit_max        | $10.76              |
+|  6 | loss_max          | $-11.77             |
+|  7 | sum_profit        | $28.71              |
+|  8 | profit_mean       | $4.54               |
+|  9 | loss_mean         | $-4.36              |
 
 ## Development
 
