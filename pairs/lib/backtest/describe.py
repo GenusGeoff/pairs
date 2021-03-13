@@ -36,7 +36,7 @@ def create_stats_table(df, positions, stats):
     metrics_formatters = [
         ('date_min', fdt), ('date_max', fdt), ('count_data_points', fi),
         ('count_trades', fi), ('winrate', fp),
-        ('count_losing_trades', fi), ('count_winning_trades', fi),
+        #('count_losing_trades', fi), ('count_winning_trades', fi),
         ('profit_max', fd), ('loss_max', fd),
         ('sum_profit', fd), 
         ('profit_mean', fd), ('loss_mean', fd),
