@@ -1,6 +1,6 @@
 """The primary backtesting module"""
 import pandas as pd
-from .model import model
+from ..analyze.model import model
 from .config import params_all
 from . import helpers
 from .get_data import get_pair
