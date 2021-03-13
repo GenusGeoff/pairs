@@ -14,7 +14,6 @@ is sold short.
 
 The `yfinance` project is used to retrieve data for stocks. 
 
-
 ## Installation
 
 There are at least two ways to utilize `pairs`. One is to install it directly via `pip`, the other
@@ -31,6 +30,32 @@ $ pip install setup.py
 ...and then you should be able to run `pairs --help` to get started. 
 
 If you'd like instead to create a virtual environment, see the heading "Environment Setup" below.
+
+## Usage
+
+After installation, `pairs` can be used to backtest a pair of two stocks like this: 
+
+```
+pairs analyze-pair --symbols FB,AMZN
+```
+
+...where symbols "FB" and "AMZN" are used as example symbols. Nearly any pair of widely-traded
+stocks should work. Running `pairs analyze-pair` will result in a table in this form:
+
+|    | metric               | value                     |
+|---:|:---------------------|:--------------------------|
+|  0 | date_min             | 2019-03-14T00:00:00-05:00 |
+|  1 | date_max             | 2021-03-12T00:00:00-06:00 |
+|  2 | count_data_points    | 504                       |
+|  3 | count_trades         | 21                        |
+|  4 | winrate              | 52.38%                    |
+|  5 | count_losing_trades  | 10                        |
+|  6 | count_winning_trades | 11                        |
+|  7 | profit_max           | $11.05                    |
+|  8 | loss_max             | $-47.72                   |
+|  9 | sum_profit           | $-170.58                  |
+| 10 | profit_mean          | $6.82                     |
+| 11 | loss_mean            | $-24.56                   |
 
 ## Development
 
