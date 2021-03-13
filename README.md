@@ -12,7 +12,7 @@ ratio, the pair is "sold", i.e. one asset is sold short and the other asset is b
 Alternatively, if the relative price is low, then the one asset is bought long and the other asset
 is sold short. 
 
-The `yfinance` project is used to retrieve data for stocks. 
+The `yfinance` project is used to retrieve data for stocks. CLI functionality is handled by `cement`.
 
 ## Installation
 
