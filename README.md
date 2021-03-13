@@ -1,12 +1,27 @@
 # A CLI for evaluating pairs trades
 
+A CLI tool that backtests and analyzes trading pairs. A pair is a set of two
+assets, one of which is purchased (long) and the other is sold (short). 
+
+The backtesting logic included in this codebase was built under the assumption
+that the economic and price relationship between the two assets is stable and
+has a tendency to revert to the mean, especially when the price relationship is
+at an extreme. 
+
+The `yfinance` project is used to retrieve data for stocks. 
+
+
 ## Installation
+
+Pairs can be installed with these two commands:
 
 ```
 $ pip install -r requirements.txt
 
 $ pip install setup.py
 ```
+
+...and then you shoudl be able to run `pairs --help` to get started. 
 
 ## Development
 

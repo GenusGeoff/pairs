@@ -33,14 +33,25 @@ def create_stats_table(df, positions, stats):
     fp = lambda x: f"{100*x:.2f}%"
     fd = lambda x: f"${x:,.2f}"
     fdt = lambda x: f"{x.isoformat()}"
-    metrics_formatters = [('count_trades', fi), ('count_losing_trades', fi),
-               ('count_winning_trades', fi),
-               ('winrate', fp), ('profit_max', fd), ('loss_max', fd),
-               ('sum_profit', fd), ('profit_mean', fd),
-               ('loss_mean', fd),]
+    metrics_formatters = [
+        ('date_min', fdt), ('date_max', fdt), ('count_data_points', fi),
+        ('count_trades', fi), ('winrate', fp),
+        ('count_losing_trades', fi), ('count_winning_trades', fi),
+        ('profit_max', fd), ('loss_max', fd),
+        ('sum_profit', fd), 
+        ('profit_mean', fd), ('loss_mean', fd),
+    ]
     tb = (pd.DataFrame.from_dict(stats, orient='index', columns=['value'])
             .reset_index().rename(columns={'index':'metric'})
             .reset_index(drop=True))
+    d = [
+        {'metric':'date_min', 'value':df['date'].min()}, 
+        {'metric':'date_max', 'value':df['date'].max()},
+        {'metric':'count_data_points', 'value':len(df)},
+    ]
+    tb = tb.append(d, ignore_index=True)
+
+    # set order  
     idx = [x[0] for x in metrics_formatters]
     tb = tb.set_index('metric').reindex(idx).reset_index()
 

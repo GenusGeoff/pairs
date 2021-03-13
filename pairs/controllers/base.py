@@ -3,6 +3,7 @@ from cement import Controller, ex
 from cement.utils.version import get_version_banner
 from ..core.version import get_version
 from ..lib.backtest.backtest import backtest
+from textwrap import wrap
 
 VERSION_BANNER = """
 A CLI for evaluating pairs trades %s
@@ -15,7 +16,11 @@ class Base(Controller):
         label = 'base'
 
         # text displayed at the top of --help output
-        description = 'A CLI for evaluating pairs trades'
+        description = ('A CLI for evaluating pairs trades. Run "pairs '
+                       'analyze-pair" to display an example with archived '
+                       'market data, or run "pairs analyze-pair -s '
+                       '"TICKER1,TICKER2" to backtest/describe arbitrary tickers. ')
+        description = '\n'.join(wrap(description, 80))
 
         # text displayed at the bottom of --help output
         epilog = 'Usage: pairs analyze-pair --symbols FB,AMZN'
@@ -52,10 +57,10 @@ class Base(Controller):
 
         if self.app.pargs.symbols is not None:
             symbols = self.app.pargs.symbols.split(',')
-            print(f"running backtest for {data['symbol_left']}-{data['symbol_right']}:")
+            print(f"running backtest for {'-'.join(symbols)}:")
             df, positions, stats, table = \
-                backtest(symbols=(data['symbol_left'], data['symbol_right']))
-            print(f"done, here are stats for {data['symbol_left']}-{data['symbol_right']}:")
+                backtest(symbols=symbols)
+            print(f"done, here are stats for {'-'.join(symbols)}:")
             print(table)
         else:
             print(f"running backtest for FB-AMZN using archived data:")
