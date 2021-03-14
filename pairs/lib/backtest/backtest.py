@@ -125,7 +125,7 @@ def backtest(df=pd.DataFrame(), symbols=(), verbose=False, params='base_daily',
                 position = dict()
 
     positions = pd.DataFrame(positions)
-    stats = describe.create_stats(positions, params)
+    stats = describe.create_stats(df, positions, params)
     table = describe.create_stats_table(df, positions, stats)
 
     return df, positions, stats, table
