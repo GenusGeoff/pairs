@@ -2,7 +2,7 @@
 from cement import Controller, ex
 from cement.utils.version import get_version_banner
 from ..core.version import get_version
-from ..lib.backtest.backtest import backtest
+from ..core.backtest.backtest import backtest
 from textwrap import wrap
 
 VERSION_BANNER = """
