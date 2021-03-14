@@ -48,13 +48,14 @@ stocks should work. Running `pairs analyze-pair` will result in a table in this 
 |  0 | date_min          | 2019-03-14T00:00:00 |
 |  1 | date_max          | 2021-03-12T00:00:00 |
 |  2 | count_data_points | 504                 |
-|  3 | count_trades      | 22                  |
-|  4 | winrate           | 63.64%              |
-|  5 | profit_max        | $10.76              |
-|  6 | loss_max          | $-11.77             |
-|  7 | sum_profit        | $28.71              |
-|  8 | profit_mean       | $4.54               |
-|  9 | loss_mean         | $-4.36              |
+|  3 | is_cointegrated   | True                |
+|  4 | count_trades      | 22                  |
+|  5 | winrate           | 63.64%              |
+|  6 | profit_max        | $10.76              |
+|  7 | loss_max          | $-11.77             |
+|  8 | sum_profit        | $28.71              |
+|  9 | profit_mean       | $4.54               |
+| 10 | loss_mean         | $-4.36              |
 
 ## Development
 
