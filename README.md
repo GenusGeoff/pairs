@@ -13,7 +13,9 @@ Alternatively, if the relative price is low, then the one asset is bought long a
 is sold short. 
 
 The `yfinance` ([link](https://github.com/ranaroussi/yfinance)) project is used to retrieve data for stocks. CLI functionality is handled by `cement`. 
-The code that handles backtesting and data retrieval is in `pairs/lib`. 
+
+The code that handles backtesting and data retrieval is in `pairs/core`. This is the location of all of the code that handles data 
+retrieval/manipulation and backtesting. 
 
 ## Installation
 
