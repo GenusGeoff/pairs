@@ -1,9 +1,10 @@
 """Funcs to analyze outcome of backtest"""
 import pandas as pd
 from tabulate import tabulate
+from ..analyze.cointegration import is_cointegrated
 
 
-def create_stats(positions, params):
+def create_stats(df, positions, params):
     """Summarize outome of backtest"""
     stats = dict()
     stats['count_trades'] = len(positions)
@@ -18,6 +19,7 @@ def create_stats(positions, params):
     stats['sum_profit'] = positions['profit'].sum()
     stats['exit_reasons'] = (positions['exit_reason'].value_counts() / len(positions)).to_dict()
     stats['general_params'] = params
+    stats['is_cointegrated'] = is_cointegrated(df)
 
     stats['profit_mean'] = positions.loc[positions['profit'] >= 0, 'profit'].mean() 
     stats['loss_mean'] = positions.loc[positions['profit'] < 0, 'profit'].mean() 
@@ -29,12 +31,14 @@ def create_stats_table(df, positions, stats):
     """Create a display table of backtest history"""
 
     # list of metrics to include in order, along with text formatters 
+    f = lambda x: x
     fi = lambda x: f"{x:,.0f}"
     fp = lambda x: f"{100*x:.2f}%"
     fd = lambda x: f"${x:,.2f}"
     fdt = lambda x: f"{x.isoformat()}"
     metrics_formatters = [
         ('date_min', fdt), ('date_max', fdt), ('count_data_points', fi),
+        ('is_cointegrated', f),
         ('count_trades', fi), ('winrate', fp),
         #('count_losing_trades', fi), ('count_winning_trades', fi),
         ('profit_max', fd), ('loss_max', fd),

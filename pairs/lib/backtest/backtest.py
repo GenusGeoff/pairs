@@ -1,52 +1,11 @@
+"""The primary backtesting module"""
 import pandas as pd
-from .model import model
+from ..analyze.model import model
 from .config import params_all
 from . import helpers
 from .get_data import get_pair
 from . import describe
-
-
-def setup(df, params):
-    """Create base inputs"""
-
-    for col in ['date', 'price_l', 'price_r']:
-        msg = f"Must have column '{col}' in df"
-        assert col in df.columns.tolist(), msg
-
-    # calculate returns, standard deviations 
-    df = df.sort_values(by=['date']).reset_index(drop=True)
-    for col in ['price_l', 'price_r']:
-        col_ret = col.replace('price', 'return')
-        col_pcg = col.replace('price', 'price_change')
-        col_std = col.replace('price', 'std')
-        col_std_pcg = col.replace('price', 'std_pcg')
-        df[col_ret] = df[col].pct_change()
-        df[col_pcg] = df[col] - df[col].shift(1)
-        df[col_std] = df[col_ret].rolling(params['window_std']).std()
-        df[col_std_pcg] = df[col_pcg].rolling(params['window_std']).std()
-
-    # rolling correlation
-    d = df[['return_l', 'return_r']].rolling(params['window_corr']).corr().reset_index()
-    df['corr_rolling'] = \
-        d[d['level_1'] == 'return_l'].set_index('level_0')['return_r']
-
-    # calculate share sizes 
-    df['size_l'] = 1
-    df['size_r'] = (df['price_l']*df['std_l']) / (df['price_r']*df['std_r'])
-
-    # calculate spread 
-    df['spread'] = df['price_l'] - df['size_r'] * df['price_r']
-    df['spread_std'] = df['spread'].rolling(params['window_std']).std()
-    df['spread_mean'] = df['spread'].rolling(params['window_std']).mean()
-    # create bands and signals
-    df['band_upper'] =  (df['spread_mean'].shift(1) \
-                         + params['factor_std']*df['spread_std'].shift(1))
-    df['signal_sell'] = df['spread'] > df['band_upper']
-    df['band_lower'] = (df['spread_mean'].shift(1) \
-                        - params['factor_std']*df['spread_std'].shift(1))
-    df['signal_buy'] = df['spread'] < df['band_lower']
-
-    return df.sort_values(by=['date']).reset_index(drop=True)
+from .calculate_inputs import setup
 
 
 def backtest(df=pd.DataFrame(), symbols=(), verbose=False, params='base_daily',
@@ -166,7 +125,7 @@ def backtest(df=pd.DataFrame(), symbols=(), verbose=False, params='base_daily',
                 position = dict()
 
     positions = pd.DataFrame(positions)
-    stats = describe.create_stats(positions, params)
+    stats = describe.create_stats(df, positions, params)
     table = describe.create_stats_table(df, positions, stats)
 
     return df, positions, stats, table
