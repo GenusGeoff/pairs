@@ -1,9 +1,14 @@
 
 from cement import Controller, ex
 from cement.utils.version import get_version_banner
+from cement.ext.ext_yaml import YamlConfigHandler
 from ..core.version import get_version
 from ..core.backtest.backtest import backtest
 from textwrap import wrap
+from pathlib import Path
+from os.path import join, exists
+from ..core.helpers import ft as fmt_term
+HOME = str(Path.home())
 
 VERSION_BANNER = """
 A CLI for evaluating pairs trades %s
@@ -38,6 +43,51 @@ class Base(Controller):
         """Default action if no sub-command is passed."""
 
         self.app.args.print_help()
+
+
+    @ex(help='Setup and modify app configuration settings.')
+    def configure(self):
+        """Setup app configuration"""
+        cf = self.app.config
+        p = lambda x: print(fmt_term(x))
+        msg = (f"This dialogue sets up the configuration file for the pairs app. "
+          f"")
+        fp = cf.get('pairs', 'config_filepath')
+        if exists(fp):
+            msg += (f"Config file '{fp}' will be loaded and then overwritten. "
+              f"Note that this file can be edited directly to change config "
+              f"settings instead of using this dialogue. ")
+        else:
+            msg+= (f"A config file will be written to '{fp}', this file will "
+              f"afterwards be referenced as the primary config file. "
+              f"Note that after this initial setup '{fp}' can be edited directly to change config "
+              f"settings (as opposed to using this dialogue). ")
+        p(msg)
+        p('')
+        a = input(fmt_term("Press 'y' to accept all current settings or press "
+                           "'enter' to review and optionally edit every "
+                           "setting > "))
+        if a != 'y':
+            p('')
+            p('Now each key present in the current config will be displayed and '
+              'optionally changed. ')
+            input('Press any key to continue...')
+            p('')
+            exclude = ['pairs', 'mail.dummy', 'log.colorlog', 'controller.base']
+            for section in [x for x in cf.get_sections() if x not in exclude]:
+                for key in cf.keys(section):
+                    msg = (f"Config section '{section}' value '{key}' is currently "
+                           f"set to '{cf.get(section, key)}'. ")
+                    p(msg)
+                    value = input(fmt_term("Press 'enter' to keep this value or input a "
+                                           "different one > "))
+                    if value:
+                        cf.set(section, key, value)
+
+        p('')
+        with open(fp, 'w') as f:
+            cf.write(f)
+        p(f"Done, wrote (overwrote) config file to '{fp}'.")
 
 
     @ex(
