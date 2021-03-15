@@ -59,6 +59,33 @@ stocks should work. Running `pairs analyze-pair` will result in a table in this 
 |  9 | profit_mean       | $4.54               |
 | 10 | loss_mean         | $-4.36              |
 
+### Configuration 
+
+`pairs` allows for custom user configuration via `PYaml`. To set up a custom configuration file, run
+`pairs configure` where you will be presented with an interactive dialogue that sets up the
+configuration file for you. 
+
+The configuration file is broken up into sections. Here is the default configuration for the
+`backtest_daily` section:
+
+```
+backtest_daily:
+  factor_loss_size: 3
+  factor_profit_std: 1.5
+  factor_std: 2
+  window_corr: 15
+  window_std: 15
+```
+
+...configuration settings in this section are the paramaters for backtesting and analysis. Below is
+an explanation of the parameters:
+
+* `factor_loss_size` - the multiple of profit target for which to take a loss. 
+* `factor_profit_std` - multiple of standard deviations of the pair to take a profit. 
+* `factor_std` - multiple of standard deviation to define a sell or buy signal. 
+* `window_corr` - lookback window for trailing correlation definition, number of price bars.
+* `window_std` - lookback window for trailing mean/std for pair price, number of price bars.
+
 ## Development
 
 This project includes a number of helpers in the `Makefile` to streamline common development tasks.
