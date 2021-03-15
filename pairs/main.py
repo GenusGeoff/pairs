@@ -3,13 +3,18 @@ from cement import App, TestApp, init_defaults
 from cement.core.exc import CaughtSignal
 from .core.exc import PairsError
 from .controllers.base import Base
+import os
+from os.path import join, exists
 from pathlib import Path
-from os.path import join
+
 HOME = str(Path.home())
 
 # configuration defaults
+cfp = join(HOME, '.config', 'pairs')
+if not exists(cfp):
+    os.mkdir(cfp)
 CONFIG = init_defaults('pairs', 'backtest_daily')
-CONFIG['pairs']['config_filepath'] = join(HOME, '.config/pairs.ini')
+CONFIG['pairs']['config_filepath'] = join(cfp, 'pairs.yml')
 CONFIG['backtest_daily']['window_std'] = 15
 CONFIG['backtest_daily']['window_corr'] = 15
 CONFIG['backtest_daily']['factor_std'] = 2
@@ -26,12 +31,6 @@ class Pairs(App):
         # configuration defaults
         config_defaults = CONFIG
 
-        # configuration handler
-        #config_handler = 'yaml'
-
-        # set config dirs
-        config_files = [CONFIG['pairs']['config_filepath']]
-
         # call sys.exit() on close
         exit_on_close = True
 
@@ -42,6 +41,8 @@ class Pairs(App):
             'jinja2',
         ]
 
+        # configuration handler
+        config_handler = 'yaml'
 
         # configuration file suffix
         config_file_suffix = '.yml'

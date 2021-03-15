@@ -1,8 +1,7 @@
-"""Misc helper funcs"""
+"""Misc functions for app"""
 from textwrap import wrap
 
 
-def ft(msg):
-    """Format a message for the terminal"""
+def fmt_term(msg):
+    """Formats text for terminal output"""
     return '\n'.join(wrap(msg, 80))
-

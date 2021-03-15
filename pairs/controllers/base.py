@@ -1,13 +1,13 @@
 
 from cement import Controller, ex
 from cement.utils.version import get_version_banner
-from cement.ext.ext_yaml import YamlConfigHandler
 from ..core.version import get_version
 from ..core.backtest.backtest import backtest
-from textwrap import wrap
-from pathlib import Path
+from ..core.helpers import fmt_term
 from os.path import join, exists
-from ..core.helpers import ft as fmt_term
+from textwrap import wrap
+import yaml
+from pathlib import Path
 HOME = str(Path.home())
 
 VERSION_BANNER = """
@@ -86,8 +86,9 @@ class Base(Controller):
 
         p('')
         with open(fp, 'w') as f:
-            cf.write(f)
+            _ = yaml.dump(cf.get_dict(), f)
         p(f"Done, wrote (overwrote) config file to '{fp}'.")
+
 
 
     @ex(
