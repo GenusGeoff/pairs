@@ -36,28 +36,45 @@ If you'd like instead to create a virtual environment, see the heading "Environm
 
 ## Usage
 
-After installation, `pairs` can be used to backtest a pair of two stocks like this: 
+After installation, `pairs` can be used to backtest a pair of two stocks by running the below
+command: 
 
 ```
-pairs analyze-pair --symbols SPY,QQQ
+pairs analyze-pair --symbols XLK,XLP
 ```
 
-...where symbols "SPY" and "QQQ" are used as example symbols. Nearly any pair of widely-traded
-stocks should work. Running `pairs analyze-pair` will result in a table in this form:
+...where symbols "XLK" (tech ETF) and "XLP" (consumer staples ETF) are used as example symbols.
+Nearly any pair of widely-traded stocks (or ETFs) should work. 
 
-|    | metric            | value               |
-|---:|:------------------|:--------------------|
-|  0 | date_min          | 2019-03-14T00:00:00 |
-|  1 | date_max          | 2021-03-12T00:00:00 |
-|  2 | count_data_points | 504                 |
-|  3 | is_cointegrated   | True                |
-|  4 | count_trades      | 22                  |
-|  5 | winrate           | 63.64%              |
-|  6 | profit_max        | $10.76              |
-|  7 | loss_max          | $-11.77             |
-|  8 | sum_profit        | $28.71              |
-|  9 | profit_mean       | $4.54               |
-| 10 | loss_mean         | $-4.36              |
+After running the above command, a table like the one below will be displayed: 
+
+```
+|    | metric                  | value               |
+|---:|:------------------------|:--------------------|
+|  0 | date_min                | 2019-03-18T00:00:00 |
+|  1 | date_max                | 2021-03-12T00:00:00 |
+|  2 | param_factor_loss_size  | 3.00                |
+|  3 | param_factor_profit_std | 0.75                |
+|  4 | param_factor_std        | 1.50                |
+|  5 | param_window_corr       | 10                  |
+|  6 | param_window_std        | 10                  |
+|  7 | count_data_points       | 502                 |
+|  8 | barsize                 | 1 days 00:00:00     |
+|  9 | is_cointegrated         | True                |
+| 10 | count_trades            | 59                  |
+| 11 | winrate                 | 74.58%              |
+| 12 | profit_max              | $5.57               |
+| 13 | loss_max                | $-5.66              |
+| 14 | sum_profit              | $56.71              |
+| 15 | profit_mean             | $1.97               |
+| 16 | loss_mean               | $-2.00              |
+| 17 | size_shares_left        | 1.00                |
+| 18 | size_shares_right       | 5.34                |
+| 19 | std_left                | $3.06               |
+| 20 | std_right               | $0.56               |
+```
+
+TODO - create a table here that explains each of the rows in the above table. 
 
 ### Configuration 
 
