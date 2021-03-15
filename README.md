@@ -48,7 +48,6 @@ Nearly any pair of widely-traded stocks (or ETFs) should work.
 
 After running the above command, a table like the one below will be displayed: 
 
-```
 |    | metric                  | value               |
 |---:|:------------------------|:--------------------|
 |  0 | date_min                | 2019-03-18T00:00:00 |
@@ -60,19 +59,20 @@ After running the above command, a table like the one below will be displayed:
 |  6 | param_window_std        | 10                  |
 |  7 | count_data_points       | 502                 |
 |  8 | barsize                 | 1 days 00:00:00     |
-|  9 | is_cointegrated         | True                |
-| 10 | count_trades            | 59                  |
-| 11 | winrate                 | 74.58%              |
-| 12 | profit_max              | $5.57               |
-| 13 | loss_max                | $-5.66              |
-| 14 | sum_profit              | $56.71              |
-| 15 | profit_mean             | $1.97               |
-| 16 | loss_mean               | $-2.00              |
-| 17 | size_shares_left        | 1.00                |
-| 18 | size_shares_right       | 5.34                |
-| 19 | std_left                | $3.06               |
-| 20 | std_right               | $0.56               |
-```
+|  9 | corr_last_10_bars       | 0.34                |
+| 10 | corr_all                | 0.72                |
+| 11 | is_cointegrated         | True                |
+| 12 | count_trades            | 59                  |
+| 13 | winrate                 | 74.58%              |
+| 14 | profit_max              | $5.57               |
+| 15 | loss_max                | $-5.66              |
+| 16 | sum_profit              | $53.74              |
+| 17 | profit_mean             | $1.90               |
+| 18 | loss_mean               | $-2.00              |
+| 19 | size_shares_left        | 1.00                |
+| 20 | size_shares_right       | 5.34                |
+| 21 | std_left                | $3.06               |
+| 22 | std_right               | $0.56               |
 
 TODO - create a table here that explains each of the rows in the above table. 
 

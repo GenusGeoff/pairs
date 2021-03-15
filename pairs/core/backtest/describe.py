@@ -36,6 +36,11 @@ def create_stats(df, positions, params):
     stats['std_left'] = d['std_pcg_l']
     stats['std_right'] = d['std_pcg_r']
 
+    # add correlation
+    stats[f"corr_last_{params['window_corr']:.0f}_bars"] = d['corr_rolling']
+    # add correlation of all data 
+    stats['corr_all'] = df[['price_change_l', 'price_change_r']].corr().iloc[0, 1]
+
     # calculate distance between rows 
     stats['barsize'] = (df['date'] - df['date'].shift(1)).dropna().median()
 
@@ -61,6 +66,8 @@ def create_stats_table(df, positions, stats):
         ('param_window_std', fi), 
         ('count_data_points', fi),
         ('barsize', f),
+        (f"corr_last_{stats['general_params']['window_corr']:.0f}_bars", ff),
+        ('corr_all', ff),
         ('is_cointegrated', f),
         ('count_trades', fi), ('winrate', fp),
         #('count_losing_trades', fi), ('count_winning_trades', fi),
