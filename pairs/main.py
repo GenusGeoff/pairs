@@ -15,10 +15,10 @@ if not exists(cfp):
     os.mkdir(cfp)
 CONFIG = init_defaults('pairs', 'backtest_daily')
 CONFIG['pairs']['config_filepath'] = join(cfp, 'pairs.yml')
-CONFIG['backtest_daily']['window_std'] = 15
-CONFIG['backtest_daily']['window_corr'] = 15
-CONFIG['backtest_daily']['factor_std'] = 2
-CONFIG['backtest_daily']['factor_profit_std'] = 1.5
+CONFIG['backtest_daily']['window_std'] = 10
+CONFIG['backtest_daily']['window_corr'] = 10
+CONFIG['backtest_daily']['factor_std'] = 1.5
+CONFIG['backtest_daily']['factor_profit_std'] = 0.75
 CONFIG['backtest_daily']['factor_loss_size'] = 3
 
 
