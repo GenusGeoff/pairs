@@ -106,15 +106,17 @@ class Base(Controller):
     def analyze_pair(self):
         """Perform a backtest on a pair"""
 
+        params = self.app.config.get_dict()['backtest_daily']
+
         if self.app.pargs.symbols is not None:
             symbols = self.app.pargs.symbols.split(',')
             print(f"running backtest for {'-'.join(symbols)}:")
             df, positions, stats, table = \
-                backtest(symbols=symbols)
+                backtest(symbols=symbols, params=params)
             print(f"done, here are stats for {'-'.join(symbols)}:")
             print(table)
         else:
             print(f"running backtest for FB-AMZN using archived data:")
-            df, positions, stats, table = backtest(example=True)
+            df, positions, stats, table = backtest(example=True, params=params)
             print(f"done, here are stats for FB-AMZN:")
             print(table)
