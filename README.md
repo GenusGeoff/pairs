@@ -17,6 +17,17 @@ The `yfinance` ([link](https://github.com/ranaroussi/yfinance)) project is used 
 The code that handles backtesting and data retrieval is in `pairs/core`. This is the location of all of the code that handles data 
 retrieval/manipulation and backtesting. 
 
+## Disclaimer
+
+In no way, shape or form is `pairs` intended to be investment advice or a solicitation to engage in
+any kind of financial transaction. While this codebase does summarize the past performance of
+certain trading strategies, past performance is not indicative of future performance. The outcome of
+these historical strategies can differ from actual trading for a large number of reasons, including
+but not limited to: errors or inaccuracies in the `pairs` code; errors or inaccuracies in the
+historical data used for generating the historical performance; changes in market dynamics;
+transaction costs; or some other factor not listed here. Any individual or entity that chooses to
+engage in any kind of financial transaction based on this codebase does so at their own risk. 
+
 ## Installation
 
 There are at least two ways to utilize `pairs`. One is to install it directly via `pip`, the other
