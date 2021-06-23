@@ -1,17 +1,22 @@
 """The primary backtesting module"""
 import pandas as pd
 from ..analyze.model import model
-from .config import params_all
 from . import helpers
 from .get_data import get_pair
 from . import describe
 from .calculate_inputs import setup
 
 
-def backtest(df=pd.DataFrame(), symbols=(), verbose=False, params='base_daily',
+def backtest(df=pd.DataFrame(), symbols=(), verbose=False, params={},
              example=True):
     """Backtest pairs trade given by df"""
-    params = params_all[params]
+
+    # set dtypes in params 
+    params['factor_loss_size'] = float(params['factor_loss_size'])
+    params['factor_profit_std'] = float(params['factor_profit_std'])
+    params['factor_std'] = float(params['factor_std'])
+    params['window_corr'] = int(params['window_corr'])
+    params['window_std'] = int(params['window_std'])
 
     # TODO - might want to build a real logger, this is just a quick hack 
     if verbose:

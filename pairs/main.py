@@ -3,10 +3,23 @@ from cement import App, TestApp, init_defaults
 from cement.core.exc import CaughtSignal
 from .core.exc import PairsError
 from .controllers.base import Base
+import os
+from os.path import join, exists
+from pathlib import Path
+
+HOME = str(Path.home())
 
 # configuration defaults
-CONFIG = init_defaults('pairs')
-CONFIG['pairs']['foo'] = 'bar'
+cfp = join(HOME, '.config', 'pairs')
+if not exists(cfp):
+    os.mkdir(cfp)
+CONFIG = init_defaults('pairs', 'backtest_daily')
+CONFIG['pairs']['config_filepath'] = join(cfp, 'pairs.yml')
+CONFIG['backtest_daily']['window_std'] = 10
+CONFIG['backtest_daily']['window_corr'] = 10
+CONFIG['backtest_daily']['factor_std'] = 1.5
+CONFIG['backtest_daily']['factor_profit_std'] = 0.75
+CONFIG['backtest_daily']['factor_loss_size'] = 3
 
 
 class Pairs(App):

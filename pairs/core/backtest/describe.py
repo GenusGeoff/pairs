@@ -12,17 +12,37 @@ def create_stats(df, positions, params):
     stats['count_losing_trades'] = len(positions[m])
     m = positions['profit'] >= 0
     stats['count_winning_trades'] = len(positions[m])
-    assert stats['count_winning_trades'] + stats['count_losing_trades'] == stats['count_trades']
+    assert stats['count_winning_trades'] + stats['count_losing_trades'] \
+        == stats['count_trades']
     stats['winrate'] = stats['count_winning_trades'] / stats['count_trades']
     stats['profit_max'] = positions['profit'].max()
     stats['loss_max'] = positions['profit'].min()
     stats['sum_profit'] = positions['profit'].sum()
-    stats['exit_reasons'] = (positions['exit_reason'].value_counts() / len(positions)).to_dict()
+    stats['exit_reasons'] = (positions['exit_reason'].value_counts() \
+                             / len(positions)).to_dict()
     stats['general_params'] = params
     stats['is_cointegrated'] = is_cointegrated(df)
 
-    stats['profit_mean'] = positions.loc[positions['profit'] >= 0, 'profit'].mean() 
-    stats['loss_mean'] = positions.loc[positions['profit'] < 0, 'profit'].mean() 
+    stats['profit_mean'] = \
+        positions.loc[positions['profit'] >= 0, 'profit'].mean() 
+    stats['loss_mean'] = \
+        positions.loc[positions['profit'] < 0, 'profit'].mean() 
+
+    # add share size 
+    d = df.iloc[-1]
+    stats['size_shares_left'] = d['size_l']
+    stats['size_shares_right'] = d['size_r']
+    # add share standard deviation 
+    stats['std_left'] = d['std_pcg_l']
+    stats['std_right'] = d['std_pcg_r']
+
+    # add correlation
+    stats[f"corr_last_{params['window_corr']:.0f}_bars"] = d['corr_rolling']
+    # add correlation of all data 
+    stats['corr_all'] = df[['price_change_l', 'price_change_r']].corr().iloc[0, 1]
+
+    # calculate distance between rows 
+    stats['barsize'] = (df['date'] - df['date'].shift(1)).dropna().median()
 
     return stats
 
@@ -33,21 +53,39 @@ def create_stats_table(df, positions, stats):
     # list of metrics to include in order, along with text formatters 
     f = lambda x: x
     fi = lambda x: f"{x:,.0f}"
+    ff = lambda x: f"{x:,.2f}"
     fp = lambda x: f"{100*x:.2f}%"
     fd = lambda x: f"${x:,.2f}"
     fdt = lambda x: f"{x.isoformat()}"
     metrics_formatters = [
-        ('date_min', fdt), ('date_max', fdt), ('count_data_points', fi),
+        ('date_min', fdt), ('date_max', fdt), 
+        ('param_factor_loss_size', ff), 
+        ('param_factor_profit_std', ff), 
+        ('param_factor_std', ff), 
+        ('param_window_corr', fi), 
+        ('param_window_std', fi), 
+        ('count_data_points', fi),
+        ('barsize', f),
+        (f"corr_last_{stats['general_params']['window_corr']:.0f}_bars", ff),
+        ('corr_all', ff),
         ('is_cointegrated', f),
         ('count_trades', fi), ('winrate', fp),
         #('count_losing_trades', fi), ('count_winning_trades', fi),
         ('profit_max', fd), ('loss_max', fd),
         ('sum_profit', fd), 
         ('profit_mean', fd), ('loss_mean', fd),
+        ('size_shares_left', ff), ('size_shares_right', ff),
+        ('std_left', fd), ('std_right', fd),
     ]
+
     tb = (pd.DataFrame.from_dict(stats, orient='index', columns=['value'])
             .reset_index().rename(columns={'index':'metric'})
             .reset_index(drop=True))
+
+    # unpack params keys 
+    for k,v in stats['general_params'].items():
+        tb = tb.append({'metric':f"param_{k}", 'value':stats['general_params'][k]}, ignore_index=True)
+
     d = [
         {'metric':'date_min', 'value':df['date'].min()}, 
         {'metric':'date_max', 'value':df['date'].max()},
